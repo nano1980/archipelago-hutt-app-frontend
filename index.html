@@ -92,7 +92,7 @@
     }
     .om-eyebrow {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 0.63rem;
+      font-size: 0.53rem;
       letter-spacing: 0.26em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.65);
@@ -245,7 +245,8 @@
     .corner-btn:active { transform: scale(0.97); }
 
     /* Meny: z:10 — naturally covered by menu layer at z:11 */
-    #btn-meny-fixed { z-index: 10; }
+    #btn-meny-fixed { z-index: 10; transition: opacity 0.35s ease; }
+    #btn-meny-fixed.hidden { opacity: 0; pointer-events: none; }
 
     /* Hem: z:100 — above everything, hidden until menu/section is open */
     #nav-home { z-index: 100; display: none; }
@@ -992,10 +993,12 @@
     var navHome = document.getElementById('nav-home');
     var menuLayer = document.getElementById('menu-layer');
     var omOss = document.getElementById('om-oss');
+    var btnMeny = document.getElementById('btn-meny-fixed');
 
     function openMenu() {
       menuLayer.classList.add('active');
       navHome.classList.add('visible');
+      btnMeny.classList.add('hidden');
     }
 
     function showScreen(id) {
@@ -1015,6 +1018,7 @@
       menuLayer.classList.add('active');
       omOss.classList.remove('hidden');
       navHome.classList.add('visible');
+      btnMeny.classList.add('hidden');
     }
 
     function goHome() {
@@ -1023,6 +1027,7 @@
       });
       menuLayer.classList.remove('active');
       navHome.classList.remove('visible');
+      btnMeny.classList.remove('hidden');
     }
   </script>
 </body>
