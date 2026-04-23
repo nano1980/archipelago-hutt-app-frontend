@@ -120,11 +120,15 @@
       margin-top: auto;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       gap: 6px;
       padding-bottom: 32px;
+      padding-left: 28px;
       color: rgba(255,255,255,0.90);
       text-shadow: 0 1px 6px rgba(0,0,0,0.55);
+    }
+    @media (min-width: 768px) {
+      .om-scroll-hint { align-items: center; padding-left: 0; }
     }
     .om-scroll-label {
       font-size: 0.68rem;
@@ -477,9 +481,11 @@
       padding: 12px 60px;
     }
     .back-btn {
-      position: fixed;
+      position: sticky;
       bottom: 28px;
-      right: 20px;
+      align-self: flex-end;
+      margin-top: auto;
+      margin-right: 20px;
       background: var(--white);
       color: var(--green-deep);
       font-size: 0.84rem;
@@ -492,6 +498,7 @@
       cursor: pointer;
       font-family: inherit;
       white-space: nowrap;
+      flex-shrink: 0;
       transition: background 0.15s, transform 0.1s;
       -webkit-tap-highlight-color: transparent;
       z-index: 10;
