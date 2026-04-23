@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#2d4a35">
+  <title>Stockholm Archipelago Hut</title>
+  <style>
+    :root {
+      --green-deep: #2d4a35;
+      --green-sage: #6a8c6e;
+      --green-pale: #d6e5d2;
+      --cream:      #f0ebe0;
+      --text:       #1e2b1f;
+      --text-muted: #5a6b5b;
+      --white:      #ffffff;
+      --radius:     12px;
+      --max-w:      480px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px; padding: 0;
+      margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* ════════════════════════════════
+       LAYER 0 — Hero background (always behind everything)
+    ════════════════════════════════ */
+    #hero-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ════════════════════════════════
+       LAYER 10 — Om oss (scrollable, always-base)
+    ════════════════════════════════ */
+    #om-oss {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── Hero section (first viewport) ── */
+    .om-hero {
+      height: 100dvh;
+      flex-shrink: 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .om-hero-gradient {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom,
+        rgba(4,14,7,0.90) 0%,
+        rgba(4,14,7,0.55) 28%,
+        rgba(4,14,7,0.10) 52%,
+        transparent 70%
+      );
+    }
+    .om-hero-top {
+      position: relative;
+      z-index: 1;
+      padding: max(52px, env(safe-area-inset-top, 0px) + 36px) 28px 0;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+    }
+    .om-eyebrow {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 0.63rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 12px;
+    }
+    .om-title {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: clamp(2.8rem, 11vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 18px;
+    }
+    .om-ingress {
+      font-size: 1rem;
+      line-height: 1.68;
+      color: rgba(255,255,255,0.84);
+      max-width: 360px;
+    }
+
+    /* Scroll hint — sits at bottom of hero */
+    .om-scroll-hint {
+      position: relative;
+      z-index: 1;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding-bottom: 32px;
+      color: rgba(255,255,255,0.90);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.55);
+    }
+    .om-scroll-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .om-scroll-arrow {
+      font-size: 1.15rem;
+      animation: bounce-arrow 2s ease-in-out infinite;
+    }
+    @keyframes bounce-arrow {
+      0%, 100% { transform: translateY(0); opacity: 0.80; }
+      50%       { transform: translateY(8px); opacity: 1; }
+    }
+
+    /* ── About section (cream, scrolls up over hero) ── */
+    .om-about {
+      background: var(--cream);
+      position: relative;
+      z-index: 1;
+    }
+    .om-about-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 36px 28px 140px; /* bottom room for fixed meny btn */
+    }
+    .om-about-heading {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .om-about-text {
+      font-size: 0.97rem;
+      line-height: 1.72;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .om-about-text:last-of-type { margin-bottom: 0; }
+
+    /* Host photo */
+    .om-hosts-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 28px 0;
+      background: var(--green-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .om-hosts-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Placeholder shown when no real photo */
+    .om-photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--green-sage);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-align: center;
+      padding: 20px;
+    }
+    .om-photo-placeholder svg {
+      width: 40px;
+      height: 40px;
+      stroke: var(--green-sage);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.7;
+    }
+
+    .om-sign {
+      margin-top: 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--green-deep);
+    }
+
+    /* ── Shared corner button style (Meny + Hem) ── */
+    .corner-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 20px;
+      background: var(--white);
+      color: var(--green-deep);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 26px;
+      cursor: pointer;
+      font-family: inherit;
+      
+      transition: background 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .corner-btn:hover { background: var(--green-pale); }
+    .corner-btn:active { transform: scale(0.97); }
+
+    /* Meny: z:10 — naturally covered by menu layer at z:11 */
+    #btn-meny-fixed { z-index: 10; }
+
+    /* Hem: z:100 — above everything, hidden until menu/section is open */
+    #nav-home { z-index: 100; display: none; }
+    #nav-home.visible { display: flex; }
+
+    /* ════════════════════════════════
+       LAYER 11 — Menu (frosted glass, above om-oss)
+       Frosting: 3/10 where 0=80%t, 10=20%t → opacity 0.38
+    ════════════════════════════════ */
+    #menu-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 11;
+      background: rgba(240, 235, 224, 0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    #menu-layer.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+
+    .lang-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 16px;
+      background: rgba(240, 235, 224, 0.55);
+      border-bottom: 1px solid rgba(106, 140, 110, 0.25);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      flex-shrink: 0;
+    }
+    .lang-row a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 34px;
+      padding: 0 11px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(106,140,110,0.3);
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.12s, color 0.12s;
+      cursor: pointer;
+    }
+    .lang-row a:hover { background: rgba(214,229,210,0.85); }
+    .lang-row a.active {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+      color: var(--white);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 20px 14px 100px; /* extra bottom for nav-home */
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+    }
+    .tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(214,229,210,0.8);
+      border-radius: var(--radius);
+      padding: 18px 8px 14px;
+      cursor: pointer;
+      text-align: center;
+      color: var(--text);
+      font-family: inherit;
+      transition: background 0.12s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+    .tile:hover {
+      background: rgba(214,229,210,0.9);
+      
+    }
+    .tile:active { transform: scale(0.95); }
+    .tile:focus-visible { box-shadow: 0 0 0 3px var(--green-sage); }
+
+    .tile-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--green-deep);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tile-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .tile-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    /* ════════════════════════════════
+       LAYER 20 — Section screens (solid cream)
+    ════════════════════════════════ */
+    .screen {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.72);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .screen.active { opacity: 1; pointer-events: auto; }
+
+    /* Section screens: dark green, hero bg image shows through */
+    .screen:not(#screen-wifi) {
+      background: rgba(16, 36, 22, 0.98);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    /* Hide om-oss when a section is active so only hero bg shows through */
+    #om-oss { transition: opacity 0.35s ease; }
+    #om-oss.hidden { opacity: 0; pointer-events: none; }
+
+    /* WiFi screen: transparent so hero shows through, wifi-cover blocks menu */
+    #screen-wifi {
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+    }
+    .wifi-cover {
+      position: absolute;
+      inset: 0;
+      /* Dark enough to hide the frosted menu tiles at z:11 behind */
+      background: rgba(6, 18, 9, 0.80);
+    }
+    .wifi-center {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wifi-oval {
+      background: rgba(22, 46, 26, 0.84);
+      border-radius: 50%;
+      width: 340px;
+      height: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--white);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 40px;
+    }
+    .wifi-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.05;
+      margin-bottom: 4px;
+    }
+    .wifi-tagline {
+      font-size: 0.63rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.58;
+      margin-bottom: 26px;
+    }
+    .wifi-row { margin-top: 12px; }
+    .wifi-row-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.56;
+      margin-bottom: 4px;
+    }
+    .wifi-row-value {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Section banner */
+    .section-banner {
+      background: rgba(20, 44, 28, 0.98);
+      
+      color: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-shrink: 0;
+    }
+    .section-banner-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 58px;
+      padding: 12px 60px;
+    }
+    .back-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 20px;
+      background: var(--white);
+      color: var(--green-deep);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 26px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+      z-index: 10;
+    }
+    .back-btn:hover { background: var(--green-pale); }
+    .back-btn:active { transform: scale(0.97); }
+    .section-title {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .section-body {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 24px 16px 100px; /* bottom padding for nav-home */
+      width: 100%;
+    }
+    /* ── Dark theme for all section content ── */
+    .intro-text {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 24px;
+    }
+
+    /* Info cards — semi-transparent light on dark */
+    .info-card {
+      background: rgba(255,255,255,0.07);
+      
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 10px;
+    }
+    .info-card p { margin: 0 0 0.75em; font-size: 0.97rem; line-height: 1.65; color: rgba(255,255,255,0.88); }
+    .info-card p:last-child { margin-bottom: 0; }
+    .info-card strong { color: rgba(200,230,210,0.65); }
+    .info-card ol, .info-card ul {
+      padding-left: 1.3em;
+      margin: 0.5em 0 0.75em;
+      font-size: 0.97rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.88);
+    }
+    .info-card li { margin: 0.35em 0; }
+
+    /* Map */
+    .map-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+      
+    }
+    .map-wrap iframe { width: 100%; height: 260px; border: 0; display: block; }
+    .map-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.07);
+      
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(200,230,210,0.65);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: background 0.12s;
+    }
+    .map-link:hover { background: rgba(255,255,255,0.12); }
+
+    /* Sub-accordions — dark theme */
+    .sub-list { display: flex; flex-direction: column; gap: 8px; }
+    details.sub {
+      background: rgba(255,255,255,0.07);
+      
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    details.sub > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 18px;
+      font-weight: 600;
+      font-size: 0.93rem;
+      color: rgba(255,255,255,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 50px;
+      user-select: none;
+    }
+    details.sub > summary::-webkit-details-marker { display: none; }
+    details.sub > summary::after {
+      content: "+";
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: rgba(200,230,210,0.45);
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    details.sub[open] > summary {
+      background: rgba(255,255,255,0.06);
+      
+    }
+    details.sub[open] > summary::after { content: "−"; }
+    .sub-body {
+      padding: 14px 18px 16px;
+      background: rgba(0,0,0,0.12);
+    }
+    .sub-body p { margin: 0 0 0.7em; font-size: 0.95rem; line-height: 1.65; color: rgba(255,255,255,0.80); }
+    .sub-body p:last-child { margin-bottom: 0; }
+    .sub-body ol, .sub-body ul {
+      padding-left: 1.3em; margin: 0 0 0.7em;
+      font-size: 0.95rem; line-height: 1.65; color: rgba(255,255,255,0.80);
+    }
+    .sub-body li { margin: 0.3em 0; }
+    .sub-body strong { color: rgba(200,230,210,0.65); }
+
+    /* (nav-home reuses .corner-btn — see above) */
+  </style>
+</head>
+<body>
+
+  <!-- ══ LAYER 0: Persistent hero ══ -->
+  <div id="hero-bg">
+    <img
+      src="https://cdn.sanity.io/images/xlcwaj4g/production/1a405ca27c525ae8e0e67ad52c8f76bde7417fa8-1024x768.jpg?w=1600&auto=format"
+      alt="" loading="eager" fetchpriority="high">
+  </div>
+
+  <!-- ══ LAYER 10: Om oss (scrollable home/about) ══ -->
+  <div id="om-oss">
+
+    <!-- First viewport: hero + title + ingress -->
+    <section class="om-hero">
+      <div class="om-hero-gradient"></div>
+      <div class="om-hero-top">
+        <p class="om-eyebrow">Tynningö · Vaxholm · Stockholms skärgård</p>
+        <h1 class="om-title">Archipelago<br>Hut</h1>
+        <p class="om-ingress">Välkommen till din igloohut med panoramautsikt mot Vaxholms kastell, mitt i Stockholms skärgård.</p>
+      </div>
+      <div class="om-scroll-hint" aria-hidden="true">
+        <span class="om-scroll-label">Möt dina värdar</span>
+        <span class="om-scroll-arrow">↓</span>
+      </div>
+    </section>
+
+    <!-- Scrolled content: about Calle & Hernan -->
+    <section class="om-about">
+      <div class="om-about-inner">
+        <h2 class="om-about-heading">Möt era värdar</h2>
+        <p class="om-about-text">Vi är Calle och Hernan, och vi är stolta ägare av Archipelago Hut. Vi byggde igloohuten för att dela skärgårdens magi med gäster från hela världen.</p>
+        <p class="om-about-text">Hutten ligger på den natursköna ön Tynningö med utsikt mot det historiska Vaxholms kastell. Den är välisolerad och passar lika bra sommartid som under vinterns stillhet.</p>
+
+        <!-- Foto av Calle & Hernan — ersätt src med riktig bild -->
+        <div class="om-hosts-photo">
+          <div class="om-photo-placeholder">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            Foto av Calle &amp; Hernan
+          </div>
+        </div>
+
+        <p class="om-about-text">Vi befinner oss alltid nära till hands. Har du frågor under vistelsen hittar du oss enkelt via chatten på Booking.com.</p>
+        <p class="om-about-text">Vi hoppas att du får en fantastisk vistelse och bär med dig minnen från skärgården länge.</p>
+        <p class="om-sign">— Calle &amp; Hernan</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Fixed Meny button — z:10, naturally covered by menu layer at z:11 -->
+  <button id="btn-meny-fixed" class="corner-btn" onclick="openMenu()">Meny →</button>
+
+  <!-- ══ LAYER 11: Menu (frosted glass) ══ -->
+  <div id="menu-layer">
+    <nav class="lang-row" aria-label="Språk">
+      <a href="#" class="active" title="Svenska" lang="sv" aria-current="true">SV</a>
+      <a href="#" title="English" lang="en">EN</a>
+      <a href="#" title="Français" lang="fr">FR</a>
+      <a href="#" title="Español" lang="es">ES</a>
+      <a href="#" title="中文" lang="zh">中文</a>
+      <a href="#" title="Deutsch" lang="de">DE</a>
+    </nav>
+
+    <div class="menu-grid">
+
+      <button class="tile" onclick="showScreen('screen-hitta-hit')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <span class="tile-label">Hitta hit</span>
+      </button>
+
+      <button class="tile" onclick="showScreen('screen-wifi')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12.55a11 11 0 0114.08 0"/>
+            <path d="M1.42 9a16 16 0 0121.16 0"/>
+            <path d="M8.53 16.11a6 6 0 016.95 0"/>
+            <line x1="12" y1="20" x2="12.01" y2="20"/>
+          </svg>
+        </div>
+        <span class="tile-label">WiFi</span>
+      </button>
+
+      <button class="tile" onclick="showScreen('screen-koket')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 8h1a4 4 0 010 8h-1"/>
+            <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/>
+            <line x1="6" y1="1" x2="6" y2="4"/>
+            <line x1="10" y1="1" x2="10" y2="4"/>
+            <line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </div>
+        <span class="tile-label">Köket</span>
+      </button>
+
+      <button class="tile" onclick="showScreen('screen-access')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="8" cy="15" r="5"/>
+            <path d="M13 9l8.5-8.5M22 6l-3-3M17 11l-3-3"/>
+          </svg>
+        </div>
+        <span class="tile-label">Incheckning</span>
+      </button>
+
+      <button class="tile" onclick="showScreen('screen-varmesystem')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/>
+          </svg>
+        </div>
+        <span class="tile-label">Värme</span>
+      </button>
+
+      <button class="tile" onclick="showScreen('screen-vatten')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/>
+          </svg>
+        </div>
+        <span class="tile-label">Vatten</span>
+      </button>
+
+      <button class="tile" onclick="showScreen('screen-toaletten')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+        </div>
+        <span class="tile-label">Toaletten</span>
+      </button>
+
+      <button class="tile" onclick="showScreen('screen-uteplatsen')">
+        <div class="tile-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </div>
+        <span class="tile-label">Uteplatsen</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ══ LAYER 20: Section screens ══ -->
+
+  <!-- WIFI -->
+  <div class="screen" id="screen-wifi">
+    <div class="wifi-cover"></div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+    <div class="wifi-center">
+      <div class="wifi-oval">
+        <div class="wifi-title">WiFi</div>
+        <div class="wifi-tagline">is on the house</div>
+        <div class="wifi-row">
+          <div class="wifi-row-label">Nätverk</div>
+          <div class="wifi-row-value">Northern Lodges Wifi</div>
+        </div>
+        <div class="wifi-row">
+          <div class="wifi-row-label">Lösenord</div>
+          <div class="wifi-row-value">ZyA(77sd7a</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HITTA HIT -->
+  <div class="screen" id="screen-hitta-hit">
+    <div class="section-banner">
+      <div class="section-banner-inner">
+        <h2 class="section-title">Hitta hit</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="map-wrap">
+        <iframe
+          src="https://maps.google.com/maps?q=Juliusbergsv%C3%A4gen+21%2C+134+92+Vaxholm%2C+Sweden&output=embed&z=14"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Karta till Archipelago Hut">
+        </iframe>
+        <a class="map-link"
+          href="https://maps.google.com/?q=Juliusbergsv%C3%A4gen+21%2C+134+92+Vaxholm"
+          target="_blank" rel="noopener">
+          Öppna i Google Maps →
+        </a>
+      </div>
+      <p class="intro-text">Du kan nå Archipelago Hut på Tynningö på flera sätt. Adressen är Juliusbergsvägen 21, 134 92 Vaxholm.</p>
+      <div class="sub-list">
+        <details class="sub">
+          <summary>Med båt (Waxholmsbolaget)</summary>
+          <div class="sub-body">
+            <p>Waxholmsbolaget trafikerar Tynningö med reguljär båttrafik från Stockholm. <strong>SL-kort är giltiga</strong> ombord.</p>
+            <p><strong>Från Strömkajen/Nybrokajen</strong> i centrala Stockholm – ta linje mot Vaxholm/Tynningö. Restid ca 1–1,5 timme beroende på linje och årstid.</p>
+            <p>Kontrollera aktuella avgångar och linjer på <strong>waxholmsbolaget.se</strong> eller i SL-appen.</p>
+          </div>
+        </details>
+        <details class="sub">
+          <summary>Med bil</summary>
+          <div class="sub-body">
+            <p>Från Stockholm: ta <strong>E18 norrut</strong> mot Norrtälje, sväng av mot Vaxholm vid Roslags-Näsby (väg 274). Följ skyltning mot Vaxholm (~32 km, ca 35 min utan trafik).</p>
+            <p>Från Vaxholm centrum tar du <strong>Tynningöfärjan</strong> – en kort bilfärja som går regelbundet till ön. Parkering finns nära färjeläget i Vaxholm.</p>
+            <p>På Tynningö följer du Juliusbergsvägen till nummer 21.</p>
+          </div>
+        </details>
+        <details class="sub">
+          <summary>Med kommunaltrafik (SL)</summary>
+          <div class="sub-body">
+            <p>Ta <strong>tunnelbana till Tekniska Högskolan</strong> (röd linje) och byt till <strong>buss 670</strong> mot Vaxholm Västerhamnsplan. Restid ca 50–60 min.</p>
+            <p>Från Västerhamnsplan i Vaxholm tar du sedan Waxholmsbolagets färja till Tynningö. SL-kort gäller hela resan.</p>
+            <p>Kontrollera tidtabell i <strong>SL-appen</strong> för aktuella avgångstider.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+  </div>
+
+  <!-- KÖKET -->
+  <div class="screen" id="screen-koket">
+    <div class="section-banner">
+      <div class="section-banner-inner">
+        <h2 class="section-title">Köket</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p class="intro-text">I köket kan du tillaga enklare måltider på gasspisen, eller varför inte koka en god kopp kaffe eller te med hjälp av kaffekokaren?</p>
+      <div class="sub-list">
+        <details class="sub">
+          <summary>Gasspis</summary>
+          <div class="sub-body">
+            <ol>
+              <li>Se till så att gasen är påvriden. Se bild</li>
+              <li>Tryck på knappen samtidigt som du vrider, se bild.</li>
+            </ol>
+          </div>
+        </details>
+        <details class="sub">
+          <summary>Kylfack</summary>
+          <div class="sub-body"><p>Kylfacket är placerat nedanför sängen, se bild</p></div>
+        </details>
+        <details class="sub">
+          <summary>Kaffe &amp; Te</summary>
+          <div class="sub-body">
+            <p>Kaffe och te hittas i skafferiet bredvid sängen, där finns även kaffepress.</p>
+            <p><strong>Så här kokar du kaffe</strong></p>
+            <ol>
+              <li>Fyll den grå kaffepressen med x antal skopor kaffe (räknat på 2 personer)</li>
+              <li>Koka upp vatten med kaffekokaren</li>
+              <li>Häll i vatten och vänta exakt 4 minuter (vänta inte för länge, då blir kaffet surt)</li>
+              <li>Dra upp pressen och servera</li>
+            </ol>
+            <p><strong>Så här gör du te</strong></p>
+          </div>
+        </details>
+        <details class="sub">
+          <summary>Köksredskap</summary>
+          <div class="sub-body">
+            <p><strong>Kaffekokare</strong><br>Koppla in sladden i väggen bredvid diskhon, där brandsläckaren sitter.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+  </div>
+
+  <!-- ACCESS -->
+  <div class="screen" id="screen-access">
+    <div class="section-banner">
+      <div class="section-banner-inner">
+        <h2 class="section-title">Incheckning</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="info-card">
+        <p><strong>Kodlås</strong><br>Den fyrsiffriga koden byts ut mellan varje gäst och skickas därför separat via chatten på Booking.com.</p>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+  </div>
+
+  <!-- VÄRMESYSTEM -->
+  <div class="screen" id="screen-varmesystem">
+    <div class="section-banner">
+      <div class="section-banner-inner">
+        <h2 class="section-title">Värmesystem</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="info-card">
+        <p><strong>Luftvärmepump</strong><br>Kontrollen ligger </p>
+        <p><strong>Dieselvärmare</strong><br>Funkar inte värmepumpen så kan du dra igång denna</p>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+  </div>
+
+  <!-- VATTEN -->
+  <div class="screen" id="screen-vatten">
+    <div class="section-banner">
+      <div class="section-banner-inner">
+        <h2 class="section-title">Vatten</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="info-card">
+        <p><strong>Kranvatten</strong><br>Kommer från egenborrad brunn på fastigheten och är INTE testat. Det går FÖRMODLIGEN att dricka, men vi rekommenderar att använda det enbart till disk och handtvätt.</p>
+        <p><strong>Dricksvatten</strong><br>Dricksvatten finns i kylfacket i golvet nedanför sängen.</p>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+  </div>
+
+  <!-- TOALETTEN -->
+  <div class="screen" id="screen-toaletten">
+    <div class="section-banner">
+      <div class="section-banner-inner">
+        <h2 class="section-title">Toaletten</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="info-card">
+        <p>Toaletten är en separett, vilket betyder att fast avföring separeras från vätska. Använd den som en vanlig toalett, men du behöver inte spola.</p>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+  </div>
+
+  <!-- UTEPLATSEN -->
+  <div class="screen" id="screen-uteplatsen">
+    <div class="section-banner">
+      <div class="section-banner-inner">
+        <h2 class="section-title">Uteplatsen</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="info-card">
+        <p>Ni är varmt välkomna att fritt använda både flytbryggan samt den del av den fasta bryggan som är längst ut, där bord och stolar är placerade.</p>
+      </div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Tillbaka</button>
+  </div>
+
+  <!-- ══ LAYER 100: Persistent Hem button ══ -->
+  <button id="nav-home" class="corner-btn" onclick="goHome()">← Hem</button>
+
+  <script>
+    var navHome = document.getElementById('nav-home');
+    var menuLayer = document.getElementById('menu-layer');
+    var omOss = document.getElementById('om-oss');
+
+    function openMenu() {
+      menuLayer.classList.add('active');
+      navHome.classList.add('visible');
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(function(s) {
+        s.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+      menuLayer.classList.remove('active');
+      omOss.classList.add('hidden');
+      navHome.classList.remove('visible');
+    }
+
+    function goBack() {
+      document.querySelectorAll('.screen').forEach(function(s) {
+        s.classList.remove('active');
+      });
+      menuLayer.classList.add('active');
+      omOss.classList.remove('hidden');
+      navHome.classList.add('visible');
+    }
+
+    function goHome() {
+      document.querySelectorAll('.screen').forEach(function(s) {
+        s.classList.remove('active');
+      });
+      menuLayer.classList.remove('active');
+      navHome.classList.remove('visible');
+    }
+  </script>
+</body>
+</html>
