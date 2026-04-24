@@ -277,6 +277,69 @@
     }
 
 
+    /* ── Language picker (hero) ── */
+    .lang-picker {
+      position: absolute;
+      top: max(16px, env(safe-area-inset-top, 0px) + 12px);
+      right: 20px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .lang-active-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--green-deep);
+      color: var(--white);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lang-active-btn:hover { background: var(--green-sage); }
+    .lang-dropdown {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .lang-dropdown.open { display: flex; }
+    .lang-dropdown a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 38px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: var(--white);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.22);
+      transition: background 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lang-dropdown a:hover { background: rgba(255,255,255,0.28); }
+    .lang-dropdown a.active {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+    }
+    /* ── Language row in menu grid ── */
     .lang-row {
       display: flex;
       justify-content: center;
@@ -640,6 +703,22 @@
     <!-- First viewport: hero + title + ingress -->
     <section class="om-hero">
       <div class="om-hero-gradient"></div>
+
+      <!-- Language picker -->
+      <div class="lang-picker">
+        <button class="lang-active-btn" onclick="toggleLangDropdown()" aria-label="Välj språk">
+          <span id="lang-active-label">SV</span>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <a href="#" class="active" onclick="setLang(this,'SV');return false;">SV</a>
+          <a href="#" onclick="setLang(this,'EN');return false;">EN</a>
+          <a href="#" onclick="setLang(this,'FR');return false;">FR</a>
+          <a href="#" onclick="setLang(this,'ES');return false;">ES</a>
+          <a href="#" onclick="setLang(this,'中文');return false;">中文</a>
+          <a href="#" onclick="setLang(this,'DE');return false;">DE</a>
+        </div>
+      </div>
+
       <div class="om-hero-top">
         <p class="om-eyebrow">Tynningö · Vaxholm · Stockholms skärgård</p>
         <h1 class="om-title">Archipelago<br>Hut</h1>
@@ -990,6 +1069,24 @@
   <button id="nav-home" class="corner-btn" onclick="goHome()">← Hem</button>
 
   <script>
+    function toggleLangDropdown() {
+      document.getElementById('lang-dropdown').classList.toggle('open');
+    }
+    function setLang(el, code) {
+      document.querySelectorAll('#lang-dropdown a').forEach(function(a) {
+        a.classList.remove('active');
+      });
+      el.classList.add('active');
+      document.getElementById('lang-active-label').textContent = code;
+      document.getElementById('lang-dropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      var picker = document.querySelector('.lang-picker');
+      if (picker && !picker.contains(e.target)) {
+        document.getElementById('lang-dropdown').classList.remove('open');
+      }
+    });
+
     var navHome = document.getElementById('nav-home');
     var menuLayer = document.getElementById('menu-layer');
     var omOss = document.getElementById('om-oss');
